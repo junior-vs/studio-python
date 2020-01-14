@@ -1,24 +1,24 @@
 class Conta:
+
     def __init__(self, numero, titular, saldo, limite):
-        print("Contruindo objeto...")
+        print("Construindo objeto ... {}".format(self))
         self.__numero = numero
         self.__titular = titular
         self.__saldo = saldo
         self.__limite = limite
 
-
     def extrato(self):
-        print("Saldo de {} do titular {}.".format(self.__saldo, self.__titular))
+        print("Saldo de {} do titular {}".format(self.__saldo, self.__titular))
 
     def deposita(self, valor):
         self.__saldo += valor
 
-    def __pode_sacar(self, valor):
-        limite_de_saque = self.__saldo + self.__limite
-        return valor <= limite_de_saque
+    def __pode_sacar(self, valor_a_sacar):
+        valor_disponivel_a_sacar = self.__saldo + self.__limite
+        return valor_a_sacar <= valor_disponivel_a_sacar
 
     def saca(self, valor):
-        if self.__pode_sacar(valor):
+        if(self.__pode_sacar(valor)):
             self.__saldo -= valor
         else:
             print("O valor {} passou o limite".format(valor))
@@ -32,7 +32,7 @@ class Conta:
         return self.__saldo
 
     @property
-    def titular(self):
+    def get_titular(self):
         return self.__titular
 
     @property
@@ -40,7 +40,7 @@ class Conta:
         return self.__limite
 
     @limite.setter
-    def set_limite(self, limite):
+    def limite(self, limite):
         self.__limite = limite
 
     @staticmethod
@@ -49,7 +49,4 @@ class Conta:
 
     @staticmethod
     def codigos_bancos():
-        return {'BB': '001', 'Caixa': '104', 'Bradesco': '237'}
-
-
-
+        return {'BB':'001', 'Caixa':'104', 'Bradesco':'237'}
