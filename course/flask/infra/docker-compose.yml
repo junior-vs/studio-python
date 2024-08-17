@@ -1,0 +1,38 @@
+services:
+#  infra:
+#    image: infra
+#    build:
+#      context: .
+#      dockerfile: ./Dockerfile
+#    ports:
+#      - 5002:5002
+  mysqldb:
+    image: mysql:8
+    container_name: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: root      
+      MYSQL_USER: user1234
+      MYSQL_PASSWORD: pass1234
+      MYSQL_DATABASE: base
+#      MYSQL_ENTRYPOINT_INITDB: ./mysql/docker-entrypoint-initdb.d
+    ports: 
+      - "3307:3306"
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    networks:
+      - network-mysql
+    restart: always
+
+  adminer:
+    image: adminer
+    ports:
+      - 8089:8080
+    networks:
+      - network-mysql
+    restart: always
+    depends_on: 
+      - mysqldb
+
+networks: 
+  network-mysql:
+    driver: bridge

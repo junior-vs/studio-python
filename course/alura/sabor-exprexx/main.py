@@ -1,16 +1,29 @@
-# This is a sample Python script.
+import requests
+import json
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+url = 'https://guilhermeonrails.github.io/api-restaurantes/restaurantes.json'
+response = requests.get(url)
+print(response)
+
+if response.status_code == 200:
+    dados_json = response.json()
+    dados_restaurante = {}
+    for item in dados_json:
+        nome_do_restaurante = item['Company']
+        if nome_do_restaurante not in dados_restaurante:
+            dados_restaurante[nome_do_restaurante] = []
+        
+        dados_restaurante[nome_do_restaurante].append({
+            "item": item['Item'],
+            "price": item['price'],
+            "description": item['description']
+        })
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+else: 
+    print(f'O erro foi {response.status_code}')
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+for nome_do_restaurante, dados in dados_restaurante.items():
+    nome_do_arquivo = f'{nome_do_restaurante}.json'
+    with open(nome_do_arquivo,'w') as arquivo_restaurante:
+        json.dump(dados,arquivo_restaurante,indent=4)
